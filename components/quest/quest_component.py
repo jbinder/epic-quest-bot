@@ -1,4 +1,4 @@
-from telegram.ext import Dispatcher
+from telegram.ext import Dispatcher, CallbackQueryHandler
 
 from common.component_base import ComponentBase
 from common.event_type import EventType
@@ -18,8 +18,11 @@ class QuestComponent(ComponentBase):
         cmd_handlers = [
             (consts.cmd_quest, self.command_handler.add_quest, False),
             (consts.cmd_quests, self.command_handler.show_quests, False),
+            (consts.cmd_complete, self.command_handler.complete_quest, False),
         ]
         super()._register_command_handlers(dp, cmd_handlers)
+
+        dp.add_handler(CallbackQueryHandler(self.command_handler.inline_handler, pass_user_data=False))
 
     def register_observer(self, event_type: EventType, observer: callable):
         raise NotImplementedError()
