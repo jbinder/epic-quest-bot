@@ -25,5 +25,7 @@ class QuestComponent(ComponentBase):
 
         dp.add_handler(CallbackQueryHandler(self.command_handler.inline_handler, pass_user_data=False))
 
+        dp.job_queue.run_repeating(self.command_handler.send_heartbeat, interval=45, first=0)
+
     def register_observer(self, event_type: EventType, observer: callable):
         raise NotImplementedError()

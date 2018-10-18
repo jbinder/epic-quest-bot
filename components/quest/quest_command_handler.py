@@ -1,5 +1,6 @@
 import re
 
+import requests
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 from common.command_handler_base import CommandHandlerBase
@@ -10,12 +11,14 @@ from components.user.user_service import UserService
 
 
 class QuestCommandHandler(CommandHandlerBase):
+    heartbeat_monitor_url: str
     bot_name: str
     user_service: UserService
     quest_service: QuestService
 
-    def __init__(self, admin_id, texts, telegram_service, bot_name, user_service, quest_service):
+    def __init__(self, admin_id, texts, telegram_service, bot_name, user_service, quest_service, heartbeat_monitor_url):
         super().__init__(admin_id, texts, telegram_service)
+        self.heartbeat_monitor_url = heartbeat_monitor_url
         self.bot_name = bot_name
         self.quest_service = quest_service
         self.user_service = user_service
@@ -65,3 +68,7 @@ class QuestCommandHandler(CommandHandlerBase):
                 bot.send_message(update.effective_chat.id, self.texts['quest-complete-error'](quest_title))
         else:
             raise ValueError()
+
+    def send_heartbeat(self, bot, job):
+        if self.heartbeat_monitor_url:
+            requests.get(self.heartbeat_monitor_url)

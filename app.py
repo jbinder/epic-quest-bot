@@ -11,6 +11,8 @@ token = os.environ['DFM_BOT_TOKEN']
 secret = os.environ['DFM_REQUEST_SECRET']
 admin_id = int(os.environ['DFM_ADMIN_ID'])
 
+heartbeat_monitor_url = os.environ.get('HEARTBEAT_MONITOR_URL', None)
+
 application = Flask(__name__)
 
 
@@ -27,6 +29,6 @@ def webhook():
 
 
 if __name__ == '__main__':
-    bot = create_bot(admin_id)
+    bot = create_bot(admin_id, heartbeat_monitor_url)
     update_queue, bot_instance = bot.run(token, 'https://{}/{}'.format(dns, secret))
     application.run(host=ip, port=port)

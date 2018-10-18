@@ -16,7 +16,7 @@ def main():
                   f"Please stop the running bot / remove the {lock_name} file.")
             return
     args = get_args()
-    bot = create_bot(args.admin_id)
+    bot = create_bot(args.admin_id, args.heartbeat_monitor_url)
     bot.run(args.token)
     if not __debug__:
         app_lock.unlock()
@@ -26,6 +26,8 @@ def get_args():
     parser = argparse.ArgumentParser(description=f"Run the {bot_name} for Telegram.")
     parser.add_argument('-t', dest="token", required=True, help='Your Telegram API token')
     parser.add_argument('-a', dest="admin_id", type=int, required=False, help='The admin user\'s Telegram ID')
+    parser.add_argument('-m', dest="heartbeat_monitor_url", type=str, required=False,
+                        help='The url to ping continuously')
     return parser.parse_args()
 
 

@@ -22,7 +22,7 @@ from components.user.user_service import UserService
 from texts import bot_name
 
 
-def create_bot(admin_id: int):
+def create_bot(admin_id: int, heartbeat_monitor_url: str):
     user_service = UserService()
     telegram_service = TelegramService(user_service)
     core_command_handler = CoreCommandHandler(admin_id, core_texts, telegram_service)
@@ -32,7 +32,7 @@ def create_bot(admin_id: int):
     announce_command_handler = AnnounceCommandHandler(admin_id, announce_texts, telegram_service, user_service)
     quest_service = QuestService()
     quest_command_handler = QuestCommandHandler(admin_id, quest_texts, telegram_service, bot_name,
-                                                user_service, quest_service)
+                                                user_service, quest_service, heartbeat_monitor_url)
     components = {
         'core': CoreComponent(core_command_handler),
         'feedback': FeedbackComponent(feedback_command_handler),
