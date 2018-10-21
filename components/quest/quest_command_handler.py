@@ -38,8 +38,8 @@ class QuestCommandHandler(CommandHandlerBase):
     @show_typing
     def show_quests(self, bot, update):
         quests = self.quest_service.get_all(update.effective_chat.id)
-        open_quests = [quest.title for quest in quests if quest.done_at is None]
-        done_quests = [quest.title for quest in quests if quest.done_at is not None]
+        open_quests = [f"- {quest.title}" for quest in quests if quest.done_at is None]
+        done_quests = [f"- {quest.title}" for quest in quests if quest.done_at is not None]
         open_quests_txt = "\n".join(open_quests) if len(open_quests) >= 1 else "-"
         done_quests_txt = "\n".join(done_quests) if len(done_quests) >= 1 else "-"
         message = f"{self.texts['quests-open']}\n{open_quests_txt}\n\n" + \
