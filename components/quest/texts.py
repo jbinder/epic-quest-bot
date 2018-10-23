@@ -6,4 +6,5 @@ texts = {
     'select-quest-to-complete': "Select the quest you want to complete...",
     'quest-completed': lambda title: f"Whooopwhoop!! Quest '{title}' has been completed!",
     'quest-complete-error': lambda title: f"Unable to complete quest '{title}' :(",
+    'stats': lambda count, done: f"From {count} quests you already completed {done}!",
 }

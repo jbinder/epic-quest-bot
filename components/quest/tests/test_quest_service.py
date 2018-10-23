@@ -66,6 +66,20 @@ class TestQuestService(unittest.TestCase):
         result = self.service.complete(quest.id, self.user2_id)
         self.assertFalse(result)
 
+    def test_stats_quests_exist(self):
+        self.service.add(self._get_quest(self.chat_id))
+        self.service.add(self._get_quest(self.chat_id))
+        self.service.add(self._get_quest(self.chat_id))
+        quest = self.service.get_all(self.chat_id)[0]
+        self.service.complete(quest.chat_id, self.user2_id)
+        stats = self.service.get_stats(self.chat_id)
+        self.assertEqual({'count': 3, 'done': 1}, stats)
+
+    def test_stats_no_quests_exist(self):
+        self.service.add(self._get_quest(0))
+        stats = self.service.get_stats(self.chat_id)
+        self.assertEqual({'count': 0, 'done': 0}, stats)
+
     def _get_quest(self, chat_id):
         return {'chat_id': chat_id, 'created_by': self.user1_id, 'title': self.title}
 

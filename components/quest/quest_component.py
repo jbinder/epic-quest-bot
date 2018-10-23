@@ -20,6 +20,7 @@ class QuestComponent(ComponentBase):
             (consts.cmd_quests, self.command_handler.show_quests, False),
             (consts.cmd_quests_short, self.command_handler.show_quests, False),
             (consts.cmd_complete, self.command_handler.complete_quest, False),
+            (consts.cmd_stats, self.command_handler.show_stats, False),
         ]
         super()._register_command_handlers(dp, cmd_handlers)
 

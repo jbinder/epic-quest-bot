@@ -39,3 +39,14 @@ class QuestService:
             commit()
             return True
         return False
+
+    @db_session
+    @db_use_utf8mb
+    @retry_on_error
+    def get_stats(self, chat_id):
+        # noinspection PyTypeChecker
+        return {
+            'count': select(quest.id for quest in Quest if quest.chat_id == chat_id).count(),
+            'done': select(quest.id for quest in Quest if
+                           quest.chat_id == chat_id and quest.done_at is not None).count()
+        }

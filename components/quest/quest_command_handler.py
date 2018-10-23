@@ -55,6 +55,11 @@ class QuestCommandHandler(CommandHandlerBase):
              for quest in open_quests])
         update.message.reply_text(self.texts['select-quest-to-complete'], reply_markup=markup, quote=False)
 
+    @show_typing
+    def show_stats(self, bot, update):
+        stats = self.quest_service.get_stats(update.effective_chat.id)
+        update.message.reply_text(f"{self.texts['stats'](stats['count'], stats['done'])}")
+
     def inline_handler(self, bot, update):
         data = re.split("[:,\n]", update.callback_query.data)
         if data[0] == "quest_id":
