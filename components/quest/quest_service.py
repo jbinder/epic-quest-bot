@@ -4,12 +4,12 @@ from pony.orm import db_session, commit, select
 
 from common.decorators.db_use_utf8mb import db_use_utf8mb
 from common.decorators.retry_on_error import retry_on_error
-from components.quest.models import Quest
+from components.quest.models import Quest, db
 
 
 class QuestService:
     @db_session
-    @db_use_utf8mb
+    @db_use_utf8mb(db)
     @retry_on_error
     def add(self, data):
         Quest(
@@ -21,14 +21,14 @@ class QuestService:
         commit()
 
     @db_session
-    @db_use_utf8mb
+    @db_use_utf8mb(db)
     @retry_on_error
     def get_all(self, chat_id):
         # noinspection PyTypeChecker
         return select(quest for quest in Quest if quest.chat_id == chat_id).order_by(lambda t: t.created_at)[:]
 
     @db_session
-    @db_use_utf8mb
+    @db_use_utf8mb(db)
     @retry_on_error
     def complete(self, quest_id, user_id):
         # noinspection PyTypeChecker
@@ -41,7 +41,7 @@ class QuestService:
         return False
 
     @db_session
-    @db_use_utf8mb
+    @db_use_utf8mb(db)
     @retry_on_error
     def get_stats(self, chat_id):
         # noinspection PyTypeChecker
