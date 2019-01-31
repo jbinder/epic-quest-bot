@@ -53,7 +53,10 @@ class QuestCommandHandler(CommandHandlerBase):
         markup = InlineKeyboardMarkup(
             [[InlineKeyboardButton(text=quest.title, callback_data=f"quest_id:{quest.id}:{quest.title}")]
              for quest in open_quests])
-        update.message.reply_text(self.texts['select-quest-to-complete'], reply_markup=markup, quote=False)
+        if len(open_quests) > 0:
+            update.message.reply_text(self.texts['select-quest-to-complete'], reply_markup=markup, quote=False)
+        else:
+            update.message.reply_text(self.texts['no-quest-to-complete'], quote=False)
 
     @show_typing
     def show_stats(self, bot, update):
