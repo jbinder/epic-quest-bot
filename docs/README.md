@@ -55,6 +55,10 @@ Allows the admin to send messages to all users. It provides the following comman
 
 -   **admin-announce** \<text\>: Sends \<text\> to all users.
 
+### response
+
+Allows returning a random message to user's messages.
+
 ### core
 
 For now used to send welcome and help messages. It provides the following commands:

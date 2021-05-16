@@ -1,9 +1,14 @@
+import os
+
 from common.utils.logging_tools import get_logger
 from components.announce.announce_command_handler import AnnounceCommandHandler
 from components.announce.announce_component import AnnounceComponent
 from components.core.core_command_handler import CoreCommandHandler
 from components.core.core_component import CoreComponent
 from components.core.texts import texts as core_texts
+from components.response.response_command_handler import ResponseCommandHandler
+from components.response.response_component import ResponseComponent
+from components.response.response_service import ResponseService
 from components.user.texts import texts as user_texts
 from components.feedback.texts import texts as feedback_texts
 from components.announce.texts import texts as announce_texts
@@ -26,8 +31,13 @@ def create_bot(admin_id: int):
     feedback_service = FeedbackService()
     feedback_command_handler = FeedbackCommandHandler(admin_id, feedback_texts, telegram_service, feedback_service)
     announce_command_handler = AnnounceCommandHandler(admin_id, announce_texts, telegram_service, user_service)
+    response_service = ResponseService()
+    # use the test messages from the component directory
+    response_service.init(ResponseService.get_absolute_file_name(os.path.join("tests", "messages.txt")))
+    response_handler = ResponseCommandHandler(admin_id, {}, telegram_service, response_service)
     components = {
         # put your custom components at the top to be able to overwrite commands
+        'response': ResponseComponent(response_handler),
         'feedback': FeedbackComponent(feedback_command_handler),
         'user': UserComponent(user_command_handler),
         'announce': AnnounceComponent(announce_command_handler),
