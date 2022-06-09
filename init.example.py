@@ -19,6 +19,7 @@ from components.user.user_command_handler import UserCommandHandler
 from components.user.user_component import UserComponent
 from common.common_bot import CommonBot
 from common.services.telegram_service import TelegramService
+from components.user.user_migration_handler import UserMigrationHandler
 from components.user.user_service import UserService
 from texts import bot_name
 
@@ -26,7 +27,7 @@ from texts import bot_name
 def create_bot(admin_id: int):
     logger = get_logger()
     user_service = UserService()
-    telegram_service = TelegramService(user_service, logger)
+    telegram_service = TelegramService(user_service, logger, [UserMigrationHandler(), DoForMeMigrationHandler()])
     core_command_handler = CoreCommandHandler(admin_id, core_texts, telegram_service)
     user_command_handler = UserCommandHandler(admin_id, user_texts, telegram_service, bot_name, user_service)
     feedback_service = FeedbackService()
