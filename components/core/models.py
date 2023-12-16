@@ -7,11 +7,9 @@ from common.utils.db_tools import get_database, init_database
 db = get_database()
 
 
-class Feedback(db.Entity):
-    user_id = Required(int, size=64)
-    created = Required(datetime)
-    text = Required(str)
-    done = Optional(datetime)
+class JobLog(db.Entity):
+    job_id = Required(str)
+    last_run = Optional(datetime)
 
 
 init_database(db)

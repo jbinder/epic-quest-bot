@@ -1,18 +1,21 @@
 # python-telegram-bot-base
 
-[![Build Status](https://travis-ci.org/jbinder/python-telegram-bot-base.svg?branch=master)](https://travis-ci.org/jbinder/python-telegram-bot-base) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b18c8596c5684727af0c402dd1628760)](https://www.codacy.com/app/jbinder/python-telegram-bot-base?utm_source=github.com&utm_medium=referral&utm_content=jbinder/python-telegram-bot-base&utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/jbinder/python-telegram-bot-base.svg?branch=master)](https://travis-ci.org/jbinder/python-telegram-bot-base) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b18c8596c5684727af0c402dd1628760)](https://www.codacy.com/app/jbinder/python-telegram-bot-base?utm_source=github.com&utm_medium=referral&utm_content=jbinder/python-telegram-bot-base&utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/jbinder/python-telegram-bot-base/branch/master/graph/badge.svg)](https://codecov.io/gh/jbinder/python-telegram-bot-base) [![BCH compliance](https://bettercodehub.com/edge/badge/jbinder/python-telegram-bot-base?branch=master)](https://bettercodehub.com/)
 
 A seed for Python Telegram bots.
 
 Features:
 
 -   Uses [Pony][] for data persistence
+-   Uses [ptbtest][] for testing
 -   Supports running the bot using webhook or polling method
 -   Component oriented
 -   Provides basic components, e.g. to
+
     -   manage users in groups
     -   collect feedback
     -   send announcements
+    
 -   Allows detecting downtimes (webhook only)
 
 ## Components
@@ -52,6 +55,10 @@ Allows the admin to send messages to all users. It provides the following comman
 
 -   **admin-announce** \<text\>: Sends \<text\> to all users.
 
+### response
+
+Allows returning a random message to user's messages.
+
 ### core
 
 For now used to send welcome and help messages. It provides the following commands:
@@ -61,7 +68,8 @@ For now used to send welcome and help messages. It provides the following comman
 
 ## Setup
 
--   Requires Python 3.6
+-   Requires Python 3.6 (including pip, setuptools, cffi, dev, wheel)
+    - Debian: build-essential libssl-dev libffi-dev
 -   Install dependencies: pip install -r requirements.txt
 -   Register the bot with privacy status 'disabled'
 
@@ -78,6 +86,10 @@ For now used to send welcome and help messages. It provides the following comman
 CommandHandlers allow observers to register for event notifications:
 
     register_observer(event_type: EventType, observer: Callable)
+
+Events are triggered in CommandHandlers using:
+
+    notify_observers(event_type: EventType, payload: Object)
 
 ## Run
 
@@ -119,6 +131,8 @@ The admin id is the Telegram user id of the user that is allowed to execute admi
 
 ## Development
 
+:warning: ptbtest does not support later Telegram bot base versions.
+
 Tests can be run using [nose][]:
 
     nosetests 
@@ -129,3 +143,4 @@ or using
 
 [pony]: https://ponyorm.com
 [nose]: https://nose.readthedocs.io
+[ptbtest]: https://github.com/Eldinnie/ptbtest
