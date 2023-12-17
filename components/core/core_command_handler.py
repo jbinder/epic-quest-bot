@@ -5,8 +5,8 @@ from components.core.core_event_type import CoreEventType
 
 class CoreCommandHandler(CommandHandlerBase):
 
-    def __init__(self, admin_id, callbacks, texts, telegram_service):
-        super().__init__(admin_id, callbacks, texts, telegram_service)
+    def __init__(self, admin_id, event_service, texts, telegram_service):
+        super().__init__(admin_id, event_service, texts, telegram_service)
 
     @show_typing
     def help_show(self, bot, update):

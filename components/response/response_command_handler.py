@@ -6,8 +6,8 @@ from components.response.response_service import ResponseService
 class ResponseCommandHandler(CommandHandlerBase):
     response_service: ResponseService
 
-    def __init__(self, admin_id, texts, telegram_service, response_service):
-        super().__init__(admin_id, texts, telegram_service)
+    def __init__(self, admin_id, event_service, texts, telegram_service, response_service):
+        super().__init__(admin_id, event_service, texts, telegram_service)
         self.response_service = response_service
 
     @show_typing
