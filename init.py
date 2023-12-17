@@ -1,3 +1,4 @@
+from common.services.event_service import EventService
 from common.utils.logging_tools import get_logger
 from components.announce.announce_command_handler import AnnounceCommandHandler
 from components.announce.announce_component import AnnounceComponent
@@ -18,21 +19,24 @@ from components.user.user_command_handler import UserCommandHandler
 from components.user.user_component import UserComponent
 from common.common_bot import CommonBot
 from common.services.telegram_service import TelegramService
+from components.user.user_migration_handler import UserMigrationHandler
 from components.user.user_service import UserService
 from texts import bot_name
 
 
 def create_bot(admin_id: int, heartbeat_monitor_url: str):
+    logger = get_logger()
+    event_queue = {}
+    event_service = EventService(logger, event_queue)
     user_service = UserService()
-    telegram_service = TelegramService(user_service)
-    core_command_handler = CoreCommandHandler(admin_id, core_texts, telegram_service)
-    user_command_handler = UserCommandHandler(admin_id, user_texts, telegram_service, bot_name, user_service)
+    telegram_service = TelegramService(user_service, logger, event_service, [UserMigrationHandler()])
+    core_command_handler = CoreCommandHandler(admin_id, event_service, core_texts, telegram_service)
+    user_command_handler = UserCommandHandler(admin_id, event_service, user_texts, telegram_service, bot_name, user_service)
     feedback_service = FeedbackService()
-    feedback_command_handler = FeedbackCommandHandler(admin_id, feedback_texts, telegram_service, feedback_service)
-    announce_command_handler = AnnounceCommandHandler(admin_id, announce_texts, telegram_service, user_service)
+    feedback_command_handler = FeedbackCommandHandler(admin_id, event_service, feedback_texts, telegram_service, feedback_service)
+    announce_command_handler = AnnounceCommandHandler(admin_id, event_service, announce_texts, telegram_service, user_service)
     quest_service = QuestService()
-    quest_command_handler = QuestCommandHandler(admin_id, quest_texts, telegram_service, bot_name,
-                                                user_service, quest_service, heartbeat_monitor_url)
+    quest_command_handler = QuestCommandHandler(admin_id, event_service, quest_texts, telegram_service, bot_name, user_service, quest_service, heartbeat_monitor_url)
     components = {
         'core': CoreComponent(core_command_handler),
         'feedback': FeedbackComponent(feedback_command_handler),
@@ -40,6 +44,5 @@ def create_bot(admin_id: int, heartbeat_monitor_url: str):
         'announce': AnnounceComponent(announce_command_handler),
         'quest': QuestComponent(quest_command_handler),
     }
-    bot = CommonBot(components, get_logger())
+    bot = CommonBot(components, logger)
     return bot
-

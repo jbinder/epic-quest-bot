@@ -16,8 +16,8 @@ class QuestCommandHandler(CommandHandlerBase):
     user_service: UserService
     quest_service: QuestService
 
-    def __init__(self, admin_id, texts, telegram_service, bot_name, user_service, quest_service, heartbeat_monitor_url):
-        super().__init__(admin_id, texts, telegram_service)
+    def __init__(self, admin_id, event_service, texts, telegram_service, bot_name, user_service, quest_service, heartbeat_monitor_url):
+        super().__init__(admin_id, event_service, texts, telegram_service)
         self.heartbeat_monitor_url = heartbeat_monitor_url
         self.bot_name = bot_name
         self.quest_service = quest_service
