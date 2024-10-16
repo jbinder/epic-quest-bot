@@ -1,0 +1,14 @@
+name: epic-quest
+services:
+    bot:
+        volumes:
+            - .:/code/app
+            - ./data:/code/app/data
+        container_name: epic-quest-bot
+        build: 
+            context: .
+        working_dir: /code/app
+        restart: always
+        env_file:
+            -   .env
+        command: sh -c "python main.py -t ${TELEGRAM_TOKEN} -a ${ADMIN_ID}"
